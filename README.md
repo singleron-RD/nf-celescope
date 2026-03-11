@@ -13,7 +13,7 @@ Detailed usage instructions for each assay are provided in their respective sect
 
 |Assay|Kit|Description of data|Doc|
 |-----|---|-------------------|---|
-|rna|GEXSCOPE® Single Cell RNA Library Kit, GEXSCOPE® Single Nuclei RNA Library Kit|single-cell/single-nucleus RNA-seq|[rna]|
+|rna|GEXSCOPE® Single Cell RNA Library Kit, GEXSCOPE® Single Nuclei RNA Library Kit|single-cell/single-nucleus RNA-seq|[rna](./docs/assays/rna.md)|
 
 
 ## Quick start
