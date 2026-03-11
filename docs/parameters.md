@@ -1,6 +1,6 @@
 # singleron-RD/nf-celescope pipeline parameters
 
-CeleScope nextflow pipeline
+This document describes the general parameters in this pipeline. For assay-specific parameters, please refer to the documentation for the individual assays
 
 
 ## input_output_options

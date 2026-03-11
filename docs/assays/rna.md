@@ -64,7 +64,7 @@ Reference parameters for RNA-related assays.
 | gtf | `string` |  | Format: [`file-path`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats) |  |  | Reference GTF annotation file. |  |
 | genome_name | `string` |  | string |  | `"star_genome"` | Specify the reference name. It is recommended to use the format species_version. The generated STAR genome index will be saved under this folder. It can then be used for future pipeline runs, reducing processing times. |  |
 | mt_gene_list | `string` |  | Format: [`file-path`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats) |  |  | Mitochondria gene list file name. This file is a plain text file with one gene per line. |  |
-| keep_attributes | `string` |  | string |  |  | Attributes to keep. | `gene_biotype=protein_coding,lncRNA,antisense;` |
+| keep_attributes | `string` |  | string |  | `gene_biotype=protein_coding,lncRNA,antisense,IG_LV_gene,IG_V_gene,IG_V_pseudogene,IG_D_gene,IG_J_gene,IG_J_pseudogene,IG_C_gene,IG_C_pseudogene,TR_V_gene,TR_V_pseudogene,TR_D_gene,TR_J_gene,TR_J_pseudogene,TR_C_gene;` | Attributes to keep. |  |
 | skip_intron | `boolean` |  | boolean |  |  | Do not add intron to gtf. |  |
 | dry_run | `boolean` |  | boolean |  |  | Only write config file and exit when `mkref`. |  |
 
@@ -78,9 +78,9 @@ Same as the argument in STARsolo. All options have default values in Celescope.
 | Property | Type | Required | Possible values | Deprecated | Default | Description | Examples |
 | -------- | ---- | -------- | --------------- | ---------- | ------- | ----------- | -------- |
 | soloFeatures | `string` |  |  |  | `GeneFull_Ex50pAS Gene` | Quantification of different transcriptomic features. <details><summary>Help</summary><small>https://github.com/alexdobin/STAR/issues/1460  <br>--soloFeatures SJ quantifies splice junctions by calculating per-cell counts ofreads that are spliced across junctions. It will count spliced reads across annotatedand unannotated junctions, thus allowing analysis of inter-cell alternative splicing and detection of novel splice isoforms.  <br>--soloFeatures Velocyto performs separate counting for spliced, unsplicedand ambiguous reads, similar to the Velocyto tool . Its output can be usedin the RNA-velocity analyses to dissect the transcriptional dynamics of the cells.  </small></details> |  |
-| soloCellFilter | `string` |  |  |  | EmptyDrops_CR 3000 0.99 10 45000 90000 500 0.01 20000 0.001 10000 | Cell-calling method. <details><summary>Help</summary><small>https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md#cell-filtering-calling</small></details> |  |
+| soloCellFilter | `string` |  |  |  | `EmptyDrops_CR 3000 0.99 10 45000 90000 500 0.01 20000 0.001 10000` | Cell-calling method. <details><summary>Help</summary><small>https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md#cell-filtering-calling</small></details> |  |
 | SAM_attributes | `string` |  | string |  |  | Additional attributes (other than NH HI nM AS CR UR CB UB GX GN ) to be added to SAM file. <details><summary>Help</summary><small>https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md#bam-tags</small></details> | `MD` |
-| outFilterMatchNmin | `string` |  | string |  | 50 | Alignment will be output only if the number of matched bases is higher than or equal to this value. |  |
+| outFilterMatchNmin | `string` |  | string |  | `50` | Alignment will be output only if the number of matched bases is higher than or equal to this value. |  |
 | soloCBmatchWLtype | `string` |  | string |  | `EditDist_2` | Matching the Cell Barcodes to the WhiteList. Please note `EditDist_2` only works with `--soloType CB_UMI_Complex`. |  |
 | outSAMtype | `string` |  | string |  | `BAM SortedByCoordinate` | type of SAM/BAM output |  |
 | limitBAMsortRAM | `string` |  | string |  | `32000000000` | Maximum available RAM (bytes) for sorting BAM. |  |
