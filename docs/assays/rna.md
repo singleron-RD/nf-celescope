@@ -64,7 +64,7 @@ Reference parameters for RNA-related assays.
 | gtf | `string` |  | Format: [`file-path`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats) |  |  | Reference GTF annotation file. |  |
 | genome_name | `string` |  | string |  | `"star_genome"` | Specify the reference name. It is recommended to use the format species_version. The generated STAR genome index will be saved under this folder. It can then be used for future pipeline runs, reducing processing times. |  |
 | mt_gene_list | `string` |  | Format: [`file-path`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats) |  |  | Mitochondria gene list file name. This file is a plain text file with one gene per line. |  |
-| keep_attributes | `string` |  | string |  | `gene_biotype=protein_coding,lncRNA,antisense,IG_LV_gene,IG_V_gene,IG_V_pseudogene,IG_D_gene,IG_J_gene,IG_J_pseudogene,IG_C_gene,IG_C_pseudogene,TR_V_gene,TR_V_pseudogene,TR_D_gene,TR_J_gene,TR_J_pseudogene,TR_C_gene;` | Attributes to keep. |  |
+| keep_attributes | `string` |  | string |  |  | Attributes to keep. | `gene_biotype=protein_coding,lncRNA,antisense;` |
 | skip_intron | `boolean` |  | boolean |  |  | Do not add intron to gtf. |  |
 | dry_run | `boolean` |  | boolean |  |  | Only write config file and exit when `mkref`. |  |
 

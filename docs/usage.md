@@ -104,7 +104,7 @@ nextflow pull singleron-RD/nf-celescope
 ```
 
 > [!NOTE]
-> This command might fail if you have trouble connecting to github. In this case, you can manually git clone the master branch and run with the path to the folder.
+> This command might fail if you have trouble connecting to github. In this case, you can manually git clone the main branch and run with the path to the folder.
 > ```
 > git clone https://github.com/singleron-RD/nf-celescope.git
 > nextflow run /workspace/pipeline/nf-celescope ...

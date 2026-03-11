@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/singleron-RD/nf-celescope/master/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/singleron-RD/nf-celescope/main/nextflow_schema.json",
     "title": "singleron-RD/nf-celescope pipeline parameters",
     "description": "CeleScope Nextflow Pipeline",
     "type": "object",
