@@ -1,0 +1,54 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/singleron-RD/nf-celescope/master/assets/schema_input.json",
+    "title": "singleron-RD/nf-celescope pipeline - params.input schema",
+    "description": "Schema for the file provided with params.input",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sample": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "fastq_1": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            },
+            "fastq_2": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            },
+            "expected_cells": {
+                "type": "integer",
+                "errorMessage": "Expected cells must be an Integer",
+                "meta": ["expected_cells"]
+            },
+            "match_barcode": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S*barcodes.tsv*",
+                "errorMessage": "Matched scRNA-Seq cell barcode file path.",
+                "meta": ["match_barcode"]
+            },
+            "background_snp": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S*.(csv|vcf)$",
+                "errorMessage": "Matched background snp file path. Must be csv or vcf format.",
+                "meta": ["background_snp"]
+            }
+        },
+        "required": ["sample", "fastq_1"]
+    }
+}

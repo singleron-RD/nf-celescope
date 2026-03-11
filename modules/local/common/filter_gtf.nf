@@ -1,0 +1,26 @@
+process FILTER_GTF {
+    tag "${gtf.BaseName}"
+    label 'process_single'
+
+    //conda 'singleronbio::celescope==v2.10.3'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'https://depot.galaxyproject.org/singularity/celescope:v2.10.3' :
+            'quay.io/singleron-rd/celescope:v2.10.3' }"
+
+    input:
+    path gtf
+
+    output:
+    path "*.filtered.gtf", emit: filtered_gtf
+
+    script:
+    def args = task.ext.args ?: ''
+    def output_gtf = "${gtf.BaseName}.filtered.gtf"
+
+    """
+    celescope utils mkgtf \\
+        ${gtf} \\
+        ${output_gtf} \\
+        $args
+    """
+}

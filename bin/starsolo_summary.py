@@ -1,0 +1,191 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+from collections import defaultdict
+
+import pandas as pd
+import numpy as np
+import utils
+
+MAX_CELL = 1 * 10**5
+FEATURE_FILE_NAME = "features.tsv.gz"
+BARCODE_FILE_NAME = "barcodes.tsv.gz"
+MATRIX_FILE_NAME = "matrix.mtx.gz"
+
+
+class StarsoloSummary:
+    def __init__(self, args):
+        self.args = args
+        barcodes_file = os.path.join(args.filtered_matrix, BARCODE_FILE_NAME)
+        self.matrix_file = os.path.join(args.filtered_matrix, MATRIX_FILE_NAME)
+        self.cbs = utils.read_one_col(barcodes_file)
+        self.stats = {}
+
+    def add_total_genes(self):
+        n = 0
+        genes = set()
+        with utils.openfile(self.matrix_file) as f:
+            for line in f:
+                n += 1
+                if n <= 3:
+                    continue
+                gene = line.split(" ")[0]
+                genes.add(gene)
+        self.stats["Total Genes"] = len(genes)
+
+    def parse_read_stats(self):
+        dtypes = defaultdict(lambda: "int")
+        dtypes["CB"] = "object"
+        df = pd.read_csv(
+            self.args.read_stats, sep="\t", header=0, index_col=0, skiprows=[1], dtype=dtypes
+        )  # skip first line cb not pass whitelist
+        df = df.loc[
+            :,
+            [
+                "cbMatch",
+                "cbPerfect",
+                "genomeU",
+                "genomeM",
+                "exonic",
+                "intronic",
+                "exonicAS",
+                "intronicAS",
+                "countedU",
+                "nUMIunique",
+                "nGenesUnique",
+            ],
+        ]
+        s = df.sum()
+        # json does not recognize NumPy data types. TypeError: Object of type int64 is not JSON serializable
+        valid = int(s["cbMatch"])
+        perfect = int(s["cbPerfect"])
+        corrected = valid - perfect
+        genome_uniq = int(s["genomeU"])
+        genome_multi = int(s["genomeM"])
+        mapped = genome_uniq + genome_multi
+        exonic = int(s["exonic"])
+        intronic = int(s["intronic"])
+        antisense = int(s["exonicAS"] + s["intronicAS"])
+        intergenic = mapped - exonic - intronic - antisense
+        counted_uniq = int(s["countedU"])
+        data_dict = {
+            "Corrected Barcodes": corrected / valid,
+            "Reads Mapped To Unique Loci": genome_uniq / valid,
+            "Reads Mapped To Multiple Loci": genome_multi / valid,
+            "Reads Mapped Uniquely To Transcriptome": counted_uniq / valid,
+            "Mapped Reads Assigned To Exonic Regions": exonic / mapped,
+            "Mapped Reads Assigned To Intronic Regions": intronic / mapped,
+            "Mapped Reads Assigned To Intergenic Regions": intergenic / mapped,
+            "Mapped Reads Assigned Antisense To Gene": antisense / mapped,
+        }
+        for k in data_dict:
+            data_dict[k] = utils.get_frac(data_dict[k])
+        self.stats.update(data_dict)
+
+        n_cells = len(self.cbs)
+        reads_cell = df.loc[self.cbs, "countedU"].sum()
+        fraction_reads_in_cells = utils.get_frac(float(reads_cell / counted_uniq))
+        mean_used_reads_per_cell = int(reads_cell / n_cells)
+        median_umi_per_cell = int(df.loc[self.cbs, "nUMIunique"].median())
+        median_genes_per_cell = int(df.loc[self.cbs, "nGenesUnique"].median())
+        data_dict = {
+            "Estimated Number of Cells": n_cells,
+            "Fraction Reads in Cells": fraction_reads_in_cells,
+            "Mean Used Reads per Cell": mean_used_reads_per_cell,
+            "Median UMI per Cell": median_umi_per_cell,
+            "Median Genes per Cell": median_genes_per_cell,
+        }
+        self.stats.update(data_dict)
+
+    def parse_summary(self):
+        data = utils.csv2dict(self.args.summary)
+        origin_new = {
+            "Number of Reads": "Raw Reads",
+            "Reads With Valid Barcodes": "Valid Reads",
+            "Sequencing Saturation": "Saturation",
+        }
+        parsed_data = {}
+        for origin, new in origin_new.items():
+            parsed_data[new] = data[origin]
+        frac_names = {"Valid Reads", "Saturation"}
+        for k in frac_names:
+            parsed_data[k] = utils.get_frac(parsed_data[k])
+        for k in set(origin_new.values()) - frac_names:
+            parsed_data[k] = int(parsed_data[k])
+        self.stats.update(parsed_data)
+
+    def process_tsv_file(self):
+        """
+        parse TSV file, separate CB and UB
+        """    
+        # read tsv
+        df_UMI = pd.read_csv(self.args.count, sep='\t')
+        total_bc = len(df_UMI)
+        sorted_counts = df_UMI["UMI"].values
+        is_cb = (df_UMI["mark"] == "CB").values
+        
+        # find the first index where is_cb is False
+        non_cb_indices = np.where(~is_cb)[0]
+        first_non_cell = non_cb_indices[0] if non_cb_indices.size > 0 else total_bc        
+        # find the last index where is_cb is True
+        cb_indices = np.where(is_cb)[0]
+        last_cell = cb_indices[-1] if cb_indices.size > 0 else 0
+
+        # define range
+        ranges = [0, first_non_cell, last_cell + 1, total_bc]
+        
+        # sep CB and UB
+        # dict: {index: umi_value}
+        sample = self.args.sample
+        json_dict = {}
+        bc_dict = {}
+        mix_dict = {}
+        bg_dict = {}
+
+        bc_tag = f"{sample}.cells.pure({ranges[1]}/{ranges[1]}, 100%)"
+        for i in range(0, first_non_cell):
+            bc_dict[i+1] = int(sorted_counts[i])
+        json_dict[bc_tag] = bc_dict
+
+        n_mix = last_cell - first_non_cell + 1
+        if n_mix != 0:
+            n_mix_cell = is_cb.sum() - first_non_cell
+            mix_rate = round(n_mix_cell / n_mix * 100)
+            mix_tag = sample + ".cells.mix" + f"({n_mix_cell}/{n_mix}, {mix_rate}%)"
+            for i in range(first_non_cell, last_cell + 1):
+                mix_dict[i + 1] = int(sorted_counts[i])
+            json_dict[mix_tag] = mix_dict
+
+        bg_cells = total_bc - first_non_cell
+        bg_tag = f"{sample}.cells.background(0/{bg_cells}, 0%)"
+        for i in range(last_cell + 1, min(MAX_CELL, total_bc), 10):
+            bg_dict[i + 1] = int(sorted_counts[i])
+        # do not record every umi count
+        for i in range(MAX_CELL, total_bc, 1000):
+            bg_dict[i + 1] = int(sorted_counts[i])
+        json_dict[bg_tag] = bg_dict
+
+        return json_dict
+
+    def run(self):
+        ASSAY = args.assay
+        self.parse_read_stats()
+        self.add_total_genes()
+        self.parse_summary()
+        plot_data = self.process_tsv_file()
+        utils.write_multiqc(plot_data, args.sample, ASSAY, "umi_count")
+        utils.write_multiqc(self.stats, args.sample, ASSAY, "starsolo_summary.stats")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Starsolo summary")
+    parser.add_argument("--read_stats", help="cellReadsStats file")
+    parser.add_argument("--count", help="count file")
+    parser.add_argument("--filtered_matrix", help="filtered_matrix")
+    parser.add_argument("--summary", help="summary file")
+    parser.add_argument("--sample", help="sample name")
+    parser.add_argument("--assay", help="assay")
+    args = parser.parse_args()
+
+    StarsoloSummary(args).run()
