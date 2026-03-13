@@ -150,10 +150,7 @@
             "properties": {
                 "soloFeatures": {
                     "type": "string",
-                    "description": "Quantification of different transcriptomic features.",
-                    "enum": [
-                        "GeneFull_Ex50pAS Gene"
-                    ]
+                    "description": "Quantification of different transcriptomic features."
                 },
                 "soloCellFilter": {
                     "type": "string",
