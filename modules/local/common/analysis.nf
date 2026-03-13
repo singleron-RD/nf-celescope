@@ -9,9 +9,8 @@ process ANALYSIS {
             'quay.io/singleron-rd/celescope:v2.10.3' }"
 
     input:
-    tuple val(meta), path(matrix_dir)
+    tuple val(meta), path(matrix_dir), path(data_json), path(metrics_json)
     path index
-    tuple val(meta), path(data_json), path(metrics_json)
 
     output:
     tuple val(meta), path('*outs/markers.tsv')          , emit: markers_file

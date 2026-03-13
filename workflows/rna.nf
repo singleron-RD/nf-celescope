@@ -87,11 +87,11 @@ workflow RNA {
     ch_multiqc_files = ch_multiqc_files.mix(STARSOLO_SUMMARY.out.json.collect{it[1]})
 
     // analysis
-    ch_merge = STARSOLO.out.data_starsolo.join(STARSOLO.out.metrics_starsolo)
+    ch_merge = STARSOLO.out.filtered_matrix
+                .join(STARSOLO.out.data_starsolo).join(STARSOLO.out.metrics_starsolo)
     ANALYSIS (
-        STARSOLO.out.filtered_matrix,
-        star_genome,
         ch_merge,
+        star_genome,
     )
     ch_versions = ch_versions.mix(ANALYSIS.out.versions.first())
 
