@@ -81,7 +81,7 @@ nextflow pull singleron-RD/nf-celescope
 
 It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [singleron-RD/nf-celescope releases page](https://github.com/singleron-RD/nf-celescope/releases) and find the latest pipeline version - numeric only (eg. `2.11.3`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 2.11.3`. Of course, you can switch to another version by changing the number after the `-r` flag.
+First, go to the [singleron-RD/nf-celescope releases page](https://github.com/singleron-RD/nf-celescope/releases) and find the latest pipeline version - numeric only (eg. `v2.11.3`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r v2.11.3`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
 
