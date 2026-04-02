@@ -5,11 +5,6 @@
 */
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { STAR_GENOME            } from '../subworkflows/local/star_genome'
-include { SAMPLE                 } from '../modules/local/common/sample'
-include { STARSOLO               } from '../modules/local/common/starsolo'
-include { STARSOLO_SUMMARY       } from '../modules/local/common/starsolo_summary'
-include { ANALYSIS               } from '../modules/local/common/analysis'
-include { MULTIQC                } from '../modules/local/common/multiqc'
 
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -21,6 +16,68 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nf-celescop
     RUN MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+process CELESCOPE_RNA {
+
+    tag "$meta.id"
+    label 'process_high'
+
+    container "${params.container}"
+
+    input:
+    tuple val(meta), path(fq1), path(fq2)
+
+    output:
+    path "versions.yml"        , emit: versions
+
+    script:
+    def args = task.ext.args ?: ''
+    def sample = "${meta.id}"
+    def fq1_str = fq1.join(',')
+    def fq2_str = fq2.join(',')
+
+    """
+    # sample step
+    celescope rna sample \\
+        --outdir ./${sample}/00.sample \\
+        --sample ${sample} \\
+        --thread ${params.thread} \\
+        --chemistry ${params.chemistry} \\
+        --fq1 "${fq1_str}" \\
+        --fq2 "${fq2_str}"
+
+    # starsolo step
+    celescope rna starsolo \\
+        --outdir ./${sample}/01.starsolo \\
+        --sample ${sample} \\
+        --thread ${params.thread} \\
+        --chemistry ${params.chemistry} \\
+        --adapter_3p ${params.adapter_3p} \\
+        --genomeDir ${params.genomeDir} \\
+        --outFilterMatchNmin ${params.outFilterMatchNmin} \\
+        --soloCellFilter "${params.soloCellFilter}" \\
+        --limitBAMsortRAM ${params.limitBAMsortRAM} \\
+        --STAR_param "${params.STAR_param}" \\
+        --outSAMtype "${params.outSAMtype}" \\
+        --soloFeatures "${params.soloFeatures}" \\
+        --soloCBmatchWLtype ${params.soloCBmatchWLtype} \\
+        --report_soloFeature ${params.report_soloFeature} \\
+        --fq1 "${fq1_str}" \\
+        --fq2 "${fq2_str}"
+
+    # analysis step
+    celescope rna analysis \\
+        --outdir ./${sample}/02.analysis \\
+        --sample ${sample} \\
+        --thread ${params.thread} \\
+        --genomeDir ${params.genomeDir} \\
+        --matrix_file ./${sample}/outs/filtered
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        celescope: \$(celescope --version | sed 's/celescope //')
+    END_VERSIONS
+    """
+}
 
 
 workflow RNA {
@@ -47,7 +104,7 @@ workflow RNA {
     ch_genome_fasta = params.fasta ? file(params.fasta, checkIfExists: true) : []
     ch_gtf          = params.gtf   ? file(params.gtf, checkIfExists: true)   : []
     if (params.star_genome) {
-        star_genome = params.star_genome ? file(params.star_genome, checkIfExists: true) : []
+        star_genome = file(params.star_genome, checkIfExists: true)
     } else {
         STAR_GENOME(
             ch_genome_fasta,
@@ -57,76 +114,13 @@ workflow RNA {
         )
         ch_versions = ch_versions.mix(STAR_GENOME.out.versions.first())
         star_genome = STAR_GENOME.out.index
-    }
 
-    // sample
-    SAMPLE (
-        ch_samplesheet,
-        params.chemistry,
-        params.assay,
+    // celescope_rna
+    CELESCOPE_RNA (
+        ch_samplesheet
     )
-    ch_multiqc_files = ch_multiqc_files.mix(SAMPLE.out.json.collect{it[1]})
-    ch_versions = ch_versions.mix(SAMPLE.out.versions.first())
+    ch_versions = ch_versions.mix(CELESCOPE_RNA.out.versions.first())
 
-    // starsolo
-    ch_merge = ch_samplesheet.join(SAMPLE.out.data_sample).join(SAMPLE.out.metrics_sample)
-    STARSOLO (
-        ch_merge,
-        star_genome,
-        params.report_soloFeature,
-        params.star_cpus,
-    )
-    ch_versions = ch_versions.mix(STARSOLO.out.versions.first())
-
-    // statsolo summary
-    ch_merge = STARSOLO.out.read_stats.join(STARSOLO.out.summary).join(STARSOLO.out.filtered_matrix).join(STARSOLO.out.counts_file)       
-    STARSOLO_SUMMARY ( 
-        ch_merge ,
-        params.assay,
-    )
-    ch_multiqc_files = ch_multiqc_files.mix(STARSOLO_SUMMARY.out.json.collect{it[1]})
-
-    // analysis
-    ch_merge = STARSOLO.out.filtered_matrix
-                .join(STARSOLO.out.data_starsolo).join(STARSOLO.out.metrics_starsolo)
-    ANALYSIS (
-        ch_merge,
-        star_genome,
-    )
-    ch_versions = ch_versions.mix(ANALYSIS.out.versions.first())
-
-    //
-    // Collate and save software versions
-    //
-    softwareVersionsToYAML(ch_versions)
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_pipeline_software_mqc_versions.yml', sort: true, newLine: true)
-        .set { ch_collated_versions }
-
-    //
-    // MODULE: MultiQC
-    //
-    ch_multiqc_config                     = Channel.fromPath("$projectDir/assets/multiqc_config/rna_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config              = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
-    ch_multiqc_logo                       = params.multiqc_logo ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
-    summary_params                        = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    ch_workflow_summary                   = Channel.value(paramsSummaryMultiqc(summary_params))
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description                = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    ch_multiqc_files                      = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files                      = ch_multiqc_files.mix(ch_collated_versions)
-    ch_multiqc_files                      = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: false))
-
-    MULTIQC (
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        ch_multiqc_custom_config.toList(),
-        "${projectDir}/modules/local/multiqc_sgr/singleron_logo.png",
-        "${projectDir}/modules/local/multiqc_sgr/",
-    )
-
-    emit:
-    multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
 
 /*

@@ -3,9 +3,7 @@ process FILTER_GTF {
     label 'process_single'
 
     //conda 'singleronbio::celescope==v2.10.3'
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'https://depot.galaxyproject.org/singularity/celescope:v2.10.3' :
-            'quay.io/singleron-rd/celescope:v2.10.3' }"
+    container "${params.container}"
 
     input:
     path gtf
