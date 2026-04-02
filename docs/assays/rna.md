@@ -1,6 +1,6 @@
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below. An example `samplesheet.csv` can be found in the [test data repository](https://github.com/singleron-RD/nf-celescope_test_data/tree/master/GEXSCOPE-V2-human).
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below. 
 
 ```bash
 --input '[path to samplesheet file]'
@@ -25,14 +25,14 @@ When you have many samples, manually creating `samplesheet.csv` can be tedious a
 
 ```
 pip install sccore
-manifest -m manifest.csv -f /workspaces/scrna_test_data/GEXSCOPE-V2
+manifest -m manifest.csv -f /workspaces/scrna_test_data/GEXSCOPE-V3
 ```
 
 Recursively search the specified folders for fastq files and (optional) matched barcode files.
 
 `-m --manifest` Path to the manifest CSV file containing mappings between fastq file prefixes and sample names. An example `manifest.csv` can be found in the [test data repository](https://github.com/singleron-RD/scrna_test_data/tree/master/GEXSCOPE-V2-human).
 
-`-f --folders` Comma-separated paths to folders to search for fastq files. If `--match` is used, all `barcode.tsv.gz` files with sample name in the full path will also be searched.
+`-f --folders` Comma-separated paths to folders to search for fastq files. 
 
 ## Running the pipeline
 
@@ -58,7 +58,7 @@ gtf: "/genome//human.GRCh38.110.gtf"
 genome_name: "human.GRCh38.110"
 ```
 
-The STAR index files will be saved in `{outdir}/star_index/{genome_name}/`.
+The STAR index files will be saved in `{outdir}/mkref/{genome_name}/`.
 When running data from the same genome later, you can provide `genomeDir` to skip the indexing:
 
 ```yaml

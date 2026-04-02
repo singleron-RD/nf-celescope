@@ -28,6 +28,7 @@ nextflow run singleron-RD/nf-celescope \
    --input samplesheet.csv \
    --fasta mmu_ensembl_110.fasta \
    --gtf mmu_ensembl_110.gtf \
+   --genome_name mmu_ensembl_110 \
    --outdir outs
 ```
 
@@ -48,17 +49,6 @@ The above pipeline run specified with a params file in yaml format:
 
 ```bash
 nextflow run singleron-RD/nf-celescope -profile docker -params-file params.yaml
-```
-
-with `params.yaml` containing:
-
-```yaml
-input: samplesheet.csv
-outdir: outs
-assay: rna
-fasta: mmu_ensembl_110.fasta
-gtf: mmu_ensembl_110.gtf
-<...>
 ```
 
 
