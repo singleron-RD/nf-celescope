@@ -41,7 +41,7 @@ nextflow run singleron-RD/nf-celescope \
  --assay rna \
  --input ./samplesheet.csv \
  --outdir ./results \
- --star_genome path_to_star_genome_index \
+ --genomeDir path_to_genomeDir_index \
  -profile docker
 ```
 
@@ -71,7 +71,7 @@ with `params.yaml` containing:
 ```yaml
 input: './samplesheet.csv'
 outdir: './results/'
-star_genome: 'path_to_star_genome_index'
+genomeDir: 'path_to_genomeDir_index'
 <...>
 ```
 

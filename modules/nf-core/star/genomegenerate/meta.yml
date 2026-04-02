@@ -1,4 +1,4 @@
-name: star_genomegenerate
+name: genomeDirgenerate
 description: Create index for STAR
 keywords:
   - index

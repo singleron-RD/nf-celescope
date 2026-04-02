@@ -1,6 +1,3 @@
-//
-// Subworkflow with functionality specific to the nf-core/scrnaseq pipeline
-//
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +58,7 @@ workflow PIPELINE_INITIALISATION {
 \033[0;34m  |\\ | |__  __ /  ` /  \\ |__) |__         \033[0;33m}  {\033[0m
 \033[0;34m  | \\| |       \\__, \\__/ |  \\ |___     \033[0;32m\\`-._,-`-,\033[0m
                                         \033[0;32m`._,._,\'\033[0m
-\033[0;35m  nf-core/scrnaseq ${workflow.manifest.version}\033[0m
+\033[0;35m  nf-celescope ${workflow.manifest.version}\033[0m
 -\033[2m----------------------------------------------------\033[0m-
 """
     after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { "    https://doi.org/${it.trim().replace('https://doi.org/','')}"}.join("\n")}${workflow.manifest.doi ? "\n" : ""}

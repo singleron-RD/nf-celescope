@@ -42,11 +42,6 @@ workflow NF_CELESCOPE {
         System.exit(1)
     }
 
-    if (params.assay !in params.valid_assays) {
-        println "Invalid assay: ${params.assay}. Available: ${valid_assays.join(', ')}"
-        System.exit(1)
-    }
-
 
     //
     // WORKFLOW: Run pipeline

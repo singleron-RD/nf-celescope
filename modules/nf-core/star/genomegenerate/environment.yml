@@ -1,4 +1,4 @@
-name: star_genomegenerate
+name: genomeDirgenerate
 channels:
   - conda-forge
   - bioconda
