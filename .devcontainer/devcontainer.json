@@ -9,11 +9,7 @@
         // Workspace path on the host for mounting with docker-outside-of-docker
         "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
     },
-
-    "features": {
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-    },
-
+    
     "onCreateCommand": "./.devcontainer/setup.sh",
 
     "hostRequirements": {
