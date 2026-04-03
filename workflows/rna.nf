@@ -25,6 +25,7 @@ process MKGTF {
 
     output:
     path "${gtf.BaseName}.filtered.gtf", emit: filtered_gtf
+    path "mt_gene_list.txt", emit: mt_gene_list
 
     script:
     def output_gtf = "${gtf.BaseName}.filtered.gtf"
@@ -47,12 +48,13 @@ process MKREF {
     input:
     path fasta
     path gtf
+    path default_mt_gene_list
 
     output:
     path "${params.genome_name}"   , emit: index
 
     script:
-    def mt_gene_list = params.mt_gene_list ? "--mt_gene_list ${params.mt_gene_list}" : ''
+    def mt_gene_list = params.mt_gene_list ? ${params.mt_gene_list} : default_mt_gene_list
 
     """
     set -e
@@ -61,7 +63,7 @@ process MKREF {
         --thread ${params.max_thread} \\
         --fasta ${fasta} \\
         --gtf ${gtf} \\
-        ${mt_gene_list}
+        --mt_gene_list ${mt_gene_list}
 
     mkdir ${params.genome_name}
     find . -maxdepth 1 -not -name "${params.genome_name}" -not -name ".*" -exec mv {} ${params.genome_name} \\;
@@ -171,6 +173,7 @@ workflow RNA {
         MKREF(
             ch_genome_fasta,
             MKGTF.out.filtered_gtf,
+            MKGTF.out.mt_gene_list,
         )
         genomeDir = MKREF.out.index
     }
