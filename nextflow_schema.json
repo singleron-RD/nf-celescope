@@ -343,6 +343,74 @@
         "max_thread": {
             "type": "integer",
             "default": 16
+        },
+        "basequalilty": {
+            "type": "integer",
+            "default": 20
+        },
+        "snp_threshold": {
+            "type": "number",
+            "default": 0.5
+        },
+        "snp_min_depth": {
+            "type": "integer",
+            "default": 10
+        },
+        "readsplit": {
+            "type": "integer",
+            "default": 1000000
+        },
+        "all_type_plot": {
+            "type": "boolean",
+            "default": false
+        },
+        "panel": {
+            "type": "string"
+        },
+        "gene_list": {
+            "type": "string"
+        },
+        "bed": {
+            "type": "string"
+        },
+        "max_duplicate": {
+            "type": "integer",
+            "default": 5
+        },
+        "bcftools_filter": {
+            "type": "string",
+            "default": "QUAL>=100"
+        },
+        "ref_threshold_method": {
+            "type": "string",
+            "default": "none"
+        },
+        "alt_threshold_method": {
+            "type": "string",
+            "default": "none"
+        },
+        "ref_min_support_read": {
+            "type": "integer",
+            "default": 2
+        },
+        "alt_min_support_read": {
+            "type": "integer",
+            "default": 2
+        },
+        "vaf": {
+            "type": "number",
+            "default": 0.2
+        },
+        "database": {
+            "type": "string",
+            "default": "GRCh38.mane.1.0.ensembl"
+        },
+        "snpeff_cache": {
+            "type": "string"
+        },
+        "plot_top_n": {
+            "type": "integer",
+            "default": 20
         }
     }
 }

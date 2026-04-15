@@ -59,6 +59,8 @@ Detailed usage for each assay are provided as follows.
 |Assay|Kit|Description of data|Doc|
 |-----|---|-------------------|---|
 |rna|GEXSCOPE® Single Cell RNA Library Kit, GEXSCOPE® Single Nuclei RNA Library Kit|single-cell/single-nucleus RNA-seq|[rna](./docs/assays/rna.md)|
+|dynaseq|DynaSCOPE® Single Cell RNA Dynamic Library Kit|Time-Resolved Transcriptomics at Single Cell Level|[dynaseq](./docs/assays/dynaseq.md)|
+|snp|FocuSCOPE® Single Cell Targeted Capture Kit|Detect Transcriptome and Variants in Single Cells|[snp](./docs/assays/snp.md)|
 
 
 
