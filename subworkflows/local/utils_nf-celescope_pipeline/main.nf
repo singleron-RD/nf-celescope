@@ -96,9 +96,9 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input and params.assay
     //
-    wo_extra_assays = ["rna","dynaseq"]
-    wt_extra_assays = ["tag"]
-    if (params.assay in wo_extra_assays) { // the cellrangermulti sub-workflow logic needs that channels have reads separated by feature_type. Cannot merge all.
+    wo_matched_assays = ["rna","dynaseq"]
+    wt_matched_assays = ["snp","vdj","tag","capture_virus","fusion","citeseq","flv_trust4","sweetseq"]
+    if (params.assay in wo_matched_assays) { // the cellrangermulti sub-workflow logic needs that channels have reads separated by feature_type. Cannot merge all.
         Channel
             .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
             .map {
@@ -120,7 +120,7 @@ workflow PIPELINE_INITIALISATION {
             .set { ch_samplesheet }
     } else {
         Channel
-            .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input/${params.assay}_input.json"))
+            .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input_matched.json"))
             .map {
                 meta, fastq_1, fastq_2 ->
                     if (!fastq_2) {

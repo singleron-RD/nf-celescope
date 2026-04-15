@@ -47,6 +47,11 @@
                 "pattern": "^\\S*.(csv|vcf)$",
                 "errorMessage": "Matched background snp file path. Must be csv or vcf format.",
                 "meta": ["background_snp"]
+            },
+            "is_control": {
+                "type": "boolean",
+                "errorMessage": "Indicates whether this sample is a control, is_control must be a boolean",
+                "meta": ["is_control"]
             }
         },
         "required": ["sample", "fastq_1"]
