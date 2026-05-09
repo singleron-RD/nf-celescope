@@ -96,7 +96,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input and params.assay
     //
-    wo_matched_assays = ["rna","dynaseq"]
+    wo_matched_assays = ["rna","dynaseq","ffpe"]
     wt_matched_assays = ["snp","vdj","tag","capture_virus","fusion","citeseq","flv_trust4","sweetseq"]
     if (params.assay in wo_matched_assays) { // the cellrangermulti sub-workflow logic needs that channels have reads separated by feature_type. Cannot merge all.
         Channel

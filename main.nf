@@ -17,6 +17,7 @@ nextflow.enable.dsl = 2
 include { RNA                     } from './workflows/rna'
 include { DYNASEQ                 } from './workflows/dynaseq'
 include { SNP                     } from './workflows/snp'
+include { FFPE                    } from './workflows/ffpe'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nf-celescope_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nf-celescope_pipeline'
 
@@ -57,6 +58,9 @@ workflow NF_CELESCOPE {
             break
         case 'snp':
             result = SNP (samplesheet)
+            break
+        case 'ffpe':
+            result = FFPE (samplesheet)
             break
         default:
             error "Unknown assay type: ${params.assay}"

@@ -61,6 +61,7 @@ Detailed usage for each assay are provided as follows.
 |rna|GEXSCOPE® Single Cell RNA Library Kit, GEXSCOPE® Single Nuclei RNA Library Kit|single-cell/single-nucleus RNA-seq|[rna](./docs/assays/rna.md)|
 |dynaseq|DynaSCOPE® Single Cell RNA Dynamic Library Kit|Time-Resolved Transcriptomics at Single Cell Level|[dynaseq](./docs/assays/dynaseq.md)|
 |snp|FocuSCOPE® Single Cell Targeted Capture Kit|Detect Transcriptome and Variants in Single Cells|[snp](./docs/assays/snp.md)|
+|ffpe|RetroSCOPE® FFPE Single Nucleus Transcriptome Library Kit|Obtain comprehensive single cell mRNA and non-coding RNA insights from FFPE tissues.|[ffpe](./docs/assays/ffpe.md)|
 
 
 
