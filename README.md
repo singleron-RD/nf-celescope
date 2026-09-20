@@ -23,8 +23,7 @@ Now, you can run the pipeline(using the single-cell rna as an example):
 
 ```bash
 nextflow run singleron-RD/nf-celescope \
-   -profile docker \
-   --assay rna \
+   -profile rna,docker \
    --input samplesheet.csv \
    --fasta mmu_ensembl_110.fasta \
    --gtf mmu_ensembl_110.gtf \
@@ -45,10 +44,28 @@ If you wish to repeatedly use the same parameters for multiple runs, rather than
 
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
 
+**Note:** The `-profile` parameter is a core Nextflow parameter and must be specified on the command line. It cannot be included in the params file.
+
+**Important:** Always use `-profile <assay_name>` to specify the assay type. The old `--assay` parameter is no longer supported and should not be used.
+
 The above pipeline run specified with a params file in yaml format:
 
 ```bash
-nextflow run singleron-RD/nf-celescope -profile docker -params-file params.yaml
+nextflow run singleron-RD/nf-celescope -profile rna,docker -params-file params.yaml
+```
+
+**params.yaml example:**
+```yaml
+input: "./samplesheet.csv"
+outdir: "./outs"
+fasta: "/genome/human.GRCh38.110.fasta"
+gtf: "/genome/human.GRCh38.110.gtf"
+genome_name: "human.GRCh38.110"
+
+# RNA-specific parameters
+soloFeatures: "GeneFull_Ex50pAS Gene"
+outFilterMatchNmin: 50
+soloCellFilter: "EmptyDrops_CR"
 ```
 
 
@@ -59,9 +76,21 @@ Detailed usage for each assay are provided as follows.
 |Assay|Kit|Description of data|Doc|
 |-----|---|-------------------|---|
 |rna|GEXSCOPE® Single Cell RNA Library Kit, GEXSCOPE® Single Nuclei RNA Library Kit|single-cell/single-nucleus RNA-seq|[rna](./docs/assays/rna.md)|
+|ffpe|RetroSCOPE® FFPE Single Nucleus Transcriptome Library Kit|Single cell FFPE|[ffpe](./docs/assays/ffpe.md)|
+|vdj|GEXSCOPE® IR Library Kit|Single-cell immune repertoire profiling(CDR3)|[vdj](./docs/assays/vdj.md)|
 |dynaseq|DynaSCOPE® Single Cell RNA Dynamic Library Kit|Time-Resolved Transcriptomics at Single Cell Level|[dynaseq](./docs/assays/dynaseq.md)|
+|tag|CLindex® Sample Multiplexing Kit|Multiplexing of up to 16 libraries for single cell sequencing through click-chemistry-based sample tagging|[tag](./docs/assays/tag.md)|
 |snp|FocuSCOPE® Single Cell Targeted Capture Kit|Detect Transcriptome and Variants in Single Cells|[snp](./docs/assays/snp.md)|
-|ffpe|RetroSCOPE® FFPE Single Nucleus Transcriptome Library Kit|Obtain comprehensive single cell mRNA and non-coding RNA insights from FFPE tissues.|[ffpe](./docs/assays/ffpe.md)|
+|fusion|FocuSCOPE® Fusion detection Kit|Gene fusion detection in single cells|[fusion](./docs/assays/fusion.md)|
+|capture_virus|FocuSCOPE® mRNA × EBV Library Kit|EBV Panel|[capture_virus](./docs/assays/capture_virus.md)|
+|sweetseq|ProMoSCOPE® Single Cell Glycosylation Detection Kit|Detection and quantification of cell surface glycosylation|[sweetseq](./docs/assays/sweetseq.md)|
+|pathseq||Single cells 16S|[pathseq](./docs/assays/pathseq.md)|
+|citeseq||Cellular Indexing of Transcriptomes and Epitopes by Sequencing|[citeseq](./docs/assays/citeseq.md)|
+|probe||Probe and primer detection|[probe](./docs/assays/probe.md)|
+|bulk_rna|AccuraCode® RNA Library Construction Kit|Sample barcoding technology with bulk RNA-seq|[bulk_rna](./docs/assays/bulk_rna.md)|
+|bulk_vdj|AccuraCode® TCR Library Construction Kit|Bulk immune repertoire profiling|[bulk_vdj](./docs/assays/bulk_vdj.md)|
+|space|PyxiSCOPE™ Spatial transcriptomics Kit|Single-cell Spatial|[space](./docs/assays/space.md)|
+|space_tag||Spatial transcriptomics with tag|[space_tag](./docs/assays/space_tag.md)|
 
 
 

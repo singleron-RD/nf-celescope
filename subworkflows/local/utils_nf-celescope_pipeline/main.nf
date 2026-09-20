@@ -96,8 +96,8 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input and params.assay
     //
-    wo_matched_assays = ["rna","dynaseq","ffpe"]
-    wt_matched_assays = ["snp","vdj","tag","capture_virus","fusion","citeseq","flv_trust4","sweetseq"]
+    wo_matched_assays = ["rna","dynaseq","ffpe","space","bulk_rna","bulk_vdj","probe"]
+    wt_matched_assays = ["snp","vdj","tag","capture_virus","fusion","citeseq","sweetseq","pathseq","space_tag"]
     if (params.assay in wo_matched_assays) { // the cellrangermulti sub-workflow logic needs that channels have reads separated by feature_type. Cannot merge all.
         Channel
             .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))

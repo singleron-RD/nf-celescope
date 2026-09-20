@@ -45,8 +45,7 @@ nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- --assay dynaseq \
- -profile docker
+ -profile dynaseq,docker
 ```
 
 ### Dynaseq-specific parameters
@@ -67,12 +66,11 @@ nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- --assay dynaseq \
  --basequalilty 20 \
  --snp_threshold 0.5 \
  --snp_min_depth 10 \
  --all_type_plot true \
- -profile docker
+ -profile dynaseq,docker
 ```
 
 ### Create genome index

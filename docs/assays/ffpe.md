@@ -43,8 +43,7 @@ nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- --assay ffpe \
- -profile docker
+ -profile ffpe,docker
 ```
 
 ### FFPE-specific parameters
@@ -62,9 +61,8 @@ nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- --assay ffpe \
  --ffpe_outFilterMatchNmin 30 \
- -profile docker
+ -profile ffpe,docker
 ```
 
 ### Create genome index

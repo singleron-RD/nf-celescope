@@ -39,11 +39,11 @@ Recursively search the specified folders for fastq files and (optional) matched 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run singleron-RD/scrna \
+nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- -profile docker
+ -profile rna,docker
 ```
 
 ### Create genome index

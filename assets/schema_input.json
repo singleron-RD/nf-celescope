@@ -52,6 +52,20 @@
                 "type": "boolean",
                 "errorMessage": "Indicates whether this sample is a control, is_control must be a boolean",
                 "meta": ["is_control"]
+            },
+            "match_dir": {
+                "type": "string",
+                "format": "directory-path",
+                "exists": true,
+                "errorMessage": "Match celescope scRNA-Seq directory.",
+                "meta": ["match_dir"]
+            },
+            "spatial": {
+                "type": "string",
+                "format": "directory-path",
+                "exists": true,
+                "errorMessage": "Spatial directory path.",
+                "meta": ["spatial"]
             }
         },
         "required": ["sample", "fastq_1"]

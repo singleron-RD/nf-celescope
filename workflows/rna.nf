@@ -94,8 +94,8 @@ process CELESCOPE_RNA {
     def (fq1, fq2) = reads.collate(2).transpose()
     def fq1_str = fq1.join(',')
     def fq2_str = fq2.join(',')
-    def pattern = params.pattern ? '--pattern ${params.pattern}' : ''
-    def whitelist = params.whitelist ? '--whitelist ${params.whitelist}' : ''
+    def pattern = params.pattern ? "--pattern ${params.pattern}" : ''
+    def whitelist = params.whitelist ? "--whitelist ${params.whitelist}" : ''
 
     """
     # sample step

@@ -44,8 +44,7 @@ nextflow run singleron-RD/nf-celescope \
  --input ./samplesheet.csv \
  --outdir ./outs \
  --genomeDir path_to_genomeDir \
- --assay snp \
- -profile docker
+ -profile snp,docker
 ```
 
 ### SNP-specific parameters

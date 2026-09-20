@@ -4,7 +4,7 @@
     "title": "singleron-RD/nf-celescope pipeline parameters",
     "description": "CeleScope Nextflow Pipeline",
     "type": "object",
-    "definitions": {
+    "$defs": {
         "input_output_options": {
             "title": "Input/output options",
             "type": "object",
@@ -245,25 +245,372 @@
                     "help_text": "Allows string values that are parseable as numbers or booleans. For further information see [JSONSchema docs](https://github.com/everit-org/json-schema#lenient-mode)."
                 }
             }
+        },
+        "rna_options": {
+            "title": "RNA options",
+            "type": "object",
+            "description": "RNA assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" }
+            }
+        },
+        "dynaseq_options": {
+            "title": "Dynaseq options",
+            "type": "object",
+            "description": "Dynaseq assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" },
+                "basequalilty": { "type": "integer", "default": 20 },
+                "snp_threshold": { "type": "number", "default": 0.5 },
+                "snp_min_depth": { "type": "integer", "default": 10 },
+                "readsplit": { "type": "integer", "default": 1000000 },
+                "all_type_plot": { "type": "boolean", "default": false }
+            }
+        },
+        "snp_options": {
+            "title": "SNP options",
+            "type": "object",
+            "description": "SNP assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" },
+                "panel": { "type": "string" },
+                "gene_list": { "type": "string" },
+                "bed": { "type": "string" },
+                "max_duplicate": { "type": "integer", "default": 5 },
+                "bcftools_filter": { "type": "string", "default": "QUAL>=100" },
+                "ref_threshold_method": { "type": "string", "default": "none" },
+                "alt_threshold_method": { "type": "string", "default": "none" },
+                "ref_min_support_read": { "type": "integer", "default": 2 },
+                "alt_min_support_read": { "type": "integer", "default": 2 },
+                "vaf": { "type": "number", "default": 0.2 },
+                "database": { "type": "string", "default": "GRCh38.mane.1.0.ensembl" },
+                "snpeff_cache": { "type": "string" },
+                "plot_top_n": { "type": "integer", "default": 20 }
+            }
+        },
+        "ffpe_options": {
+            "title": "FFPE options",
+            "type": "object",
+            "description": "FFPE assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 30 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" }
+            }
+        },
+        "vdj_options": {
+            "title": "VDJ options",
+            "type": "object",
+            "description": "VDJ assay specific options",
+            "properties": {
+                "ref_path": { "type": "string", "description": "Path to existing VDJ reference index directory (e.g. human_TR)" },
+                "vdj_ref_dir": { "type": "string", "description": "Directory containing IMGT fasta files for building VDJ reference" },
+                "species": { "type": "string", "default": "human" },
+                "vdj_type": { "type": "string", "default": "TCR" },
+                "threshold": { "type": "number", "default": 0.5 },
+                "not_consensus": { "type": "boolean", "default": false },
+                "min_consensus_read": { "type": "integer", "default": 2 },
+                "split_fasta": { "type": "boolean", "default": false },
+                "aux_file": { "type": "string", "format": "file-path", "description": "Aux file for igblastn. Required for customized species (not human or mouse)." },
+                "UMI_min": { "default": 3 },
+                "BCR_iUMI": { "type": "integer", "default": 2 },
+                "TCR_iUMI": { "type": "integer", "default": 2 },
+                "expected_target_cell_num": { "type": "integer" },
+                "target_cell_barcode": { "type": "string" },
+                "target_weight": { "type": "number", "default": 3.0 }
+            }
+        },
+        "bulk_vdj_options": {
+            "title": "Bulk VDJ options",
+            "type": "object",
+            "description": "Bulk VDJ assay specific options",
+            "properties": {
+                "ref_path": { "type": "string", "description": "Path to existing VDJ reference index directory (e.g. human_TR). Either --ref_path or --vdj_ref_dir must be provided." },
+                "vdj_ref_dir": { "type": "string", "description": "Directory containing IMGT fasta files for building VDJ reference. Either --ref_path or --vdj_ref_dir must be provided." },
+                "species": { "type": "string", "default": "human" },
+                "vdj_type": { "type": "string", "default": "TCR" },
+                "threshold": { "type": "number", "default": 0.5 },
+                "not_consensus": { "type": "boolean", "default": false },
+                "min_consensus_read": { "type": "integer", "default": 2 },
+                "split_fasta": { "type": "boolean", "default": false },
+                "aux_file": { "type": "string", "format": "file-path", "description": "Aux file for igblastn. Required for customized species (not human or mouse)." }
+            }
+        },
+        "citeseq_options": {
+            "title": "CITE-seq options",
+            "type": "object",
+            "description": "CITE-seq assay specific options",
+            "properties": {
+                "barcode_fasta": { "type": "string" },
+                "fq_pattern": { "type": "string" }
+            }
+        },
+        "fusion_options": {
+            "title": "Fusion options",
+            "type": "object",
+            "description": "Fusion assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genome" },
+                "keep_attributes": { "type": "string" },
+                "fusion_pos": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" },
+                "fusion_genomeDir": { "type": "string" },
+                "out_unmapped": { "type": "boolean", "default": false },
+                "outFilterMultimapNmax": { "type": "integer", "default": 1 },
+                "starMem": { "type": "integer", "default": 30 },
+                "minimum_length": { "type": "integer", "default": 20 },
+                "nextseq_trim": { "type": "integer", "default": 20 },
+                "overlap": { "type": "integer", "default": 10 },
+                "cutadapt_param": { "type": "string" },
+                "flanking_base": { "type": "integer", "default": 5 },
+                "min_query_length": { "type": "integer", "default": 35 },
+                "not_correct_UMI": { "type": "boolean", "default": false },
+                "read_threshold_method": { "type": "string", "default": "otsu" },
+                "read_hard_threshold": { "type": "integer" },
+                "umi_threshold_method": { "type": "string", "default": "otsu" },
+                "umi_hard_threshold": { "type": "integer" },
+                "auto_coef": { "type": "integer", "default": 3 },
+                "otsu_log_base": { "type": "number", "default": 10 }
+            }
+        },
+        "tag_options": {
+            "title": "Tag options",
+            "type": "object",
+            "description": "Tag assay specific options",
+            "properties": {
+                "barcode_fasta": { "type": "string" },
+                "fq_pattern": { "type": "string" },
+                "split_matrix": { "type": "boolean", "default": false },
+                "linker_fasta": { "type": "string" },
+                "UMI_min": { "default": "auto" },
+                "dim": { "type": "integer", "default": 1 },
+                "snr_min": { "type": "string", "default": "auto" },
+                "coefficient": { "type": "number", "default": 0.1 },
+                "tag_threshold_method": { "type": "string", "default": "snr" }
+            }
+        },
+        "space_options": {
+            "title": "Space options",
+            "type": "object",
+            "description": "Space assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "mirna_fasta": { "type": "string" },
+                "mirna_gtf": { "type": "string" },
+                "mirna_genomeDir": { "type": "string" },
+                "mirna_name": { "type": "string", "default": "mirnaDir" },
+                "min_genes": { "type": "integer", "default": 1 },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" }
+            }
+        },
+        "sweetseq_options": {
+            "title": "Sweet-seq options",
+            "type": "object",
+            "description": "Sweet-seq assay specific options",
+            "properties": {
+                "barcode_fasta": { "type": "string" },
+                "linker_fasta": { "type": "string" },
+                "fq_pattern": { "type": "string" }
+            }
+        },
+        "capture_virus_options": {
+            "title": "Capture Virus options",
+            "type": "object",
+            "description": "Capture Virus assay specific options",
+            "properties": {
+                "virus_genomeDir": { "type": "string" },
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "minimum_length": { "type": "integer", "default": 20 },
+                "nextseq_trim": { "type": "integer", "default": 20 },
+                "overlap": { "type": "integer", "default": 10 },
+                "cutadapt_param": { "type": "string", "default": "" },
+                "skip_cutadapt": { "type": "boolean", "default": false },
+                "threshold": { "type": "number", "default": 0.5 },
+                "not_consensus": { "type": "boolean", "default": false },
+                "min_consensus_read": { "type": "integer", "default": 2 },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "out_unmapped": { "type": "boolean", "default": false },
+                "STAR_param": { "type": "string", "default": "" },
+                "outFilterMultimapNmax": { "type": "integer", "default": 1 },
+                "starMem": { "type": "integer", "default": 30 },
+                "min_query_length": { "type": "integer" },
+                "not_correct_UMI": { "type": "boolean", "default": false },
+                "read_threshold_method": { "type": "string", "default": "otsu" },
+                "read_hard_threshold": { "type": "integer" },
+                "umi_threshold_method": { "type": "string", "default": "otsu" },
+                "umi_hard_threshold": { "type": "integer" },
+                "auto_coef": { "type": "integer", "default": 3 },
+                "otsu_log_base": { "type": "number", "default": 10 },
+                "featureCounts_param": { "type": "string", "default": "" }
+            }
+        },
+        "pathseq_options": {
+            "title": "Path-seq options",
+            "type": "object",
+            "description": "Path-seq assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR 3000 0.99 10 45000 90000 500 0.01 20000 0.001 10000" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" },
+                "filter_bwa_image": { "type": "string" },
+                "kmer_file": { "type": "string" },
+                "microbe_bwa_image": { "type": "string" },
+                "microbe_dict": { "type": "string" },
+                "microbe_fasta": { "type": "string" },
+                "microbe_name": { "type": "string", "default": "microbe" },
+                "min_score_identity": { "type": "number", "default": 0.7 },
+                "min_clipped_read_length": { "type": "integer", "default": 60 },
+                "downsample_reads": { "type": "integer", "default": 10000000 },
+                "bloom_false_positive_probability": { "type": "number", "default": 0.001 },
+                "kmer_size": { "type": "integer", "default": 31 },
+                "kmer_mask": { "type": "string" },
+                "java_options": { "type": "string", "default": "-Xmx30G" },
+                "microbe_taxonomy_file": { "type": "string", "description": "Required for pathseq assay. Path to microbe taxonomy file." }
+            },
+            "required": ["microbe_taxonomy_file"]
+        },
+        "bulk_rna_options": {
+            "title": "Bulk RNA options",
+            "type": "object",
+            "description": "Bulk RNA assay specific options",
+            "properties": {
+                "fasta": { "type": "string" },
+                "gtf": { "type": "string" },
+                "genomeDir": { "type": "string" },
+                "mt_gene_list": { "type": "string" },
+                "genome_name": { "type": "string", "default": "genomeDir" },
+                "keep_attributes": { "type": "string" },
+                "soloFeatures": { "type": "string", "default": "GeneFull_Ex50pAS Gene" },
+                "outFilterMatchNmin": { "type": "integer", "default": 50 },
+                "soloCellFilter": { "type": "string", "default": "EmptyDrops_CR" },
+                "outSAMtype": { "type": "string", "default": "BAM SortedByCoordinate" },
+                "soloCBmatchWLtype": { "type": "string", "default": "EditDist_2" },
+                "limitBAMsortRAM": { "type": "integer", "default": 32000000000 },
+                "adapter_3p": { "type": "string", "default": "AAAAAAAAAAAA" },
+                "report_soloFeature": { "type": "string", "default": "GeneFull_Ex50pAS" },
+                "STAR_param": { "type": "string" },
+                "well_sample": { "type": "string", "format": "file-path", "description": "Required for bulk RNA assay. TSV file containing well numbers (1st column) and corresponding sample names (2nd column)." },
+                "split_fastq": { "type": "boolean", "default": false, "description": "Split FASTQ file according to well barcodes. Appends UMI to read name with separator ':'." },
+                "split_bam": { "type": "boolean", "default": false, "description": "Split BAM file according to well barcodes." }
+            },
+            "required": ["well_sample"]
+        },
+        "probe_options": {
+            "title": "Probe options",
+            "type": "object",
+            "description": "Probe assay specific options",
+            "properties": {
+                "probe_fasta": { "type": "string" },
+                "primer_fasta": { "type": "string" },
+                "max_mismatch": { "type": "integer", "default": 2 }
+            }
+        },
+        "space_tag_options": {
+            "title": "Space Tag options",
+            "type": "object",
+            "description": "Space Tag assay specific options",
+            "properties": {
+                "barcode_fasta": { "type": "string" },
+                "fq_pattern": { "type": "string" },
+                "linker_fasta": { "type": "string" }
+            }
         }
     },
-    "allOf": [
-        {
-            "$ref": "#/definitions/input_output_options"
-        },
-        {
-            "$ref": "#/definitions/institutional_config_options"
-        },
-        {
-            "$ref": "#/definitions/max_job_request_options"
-        },
-        {
-            "$ref": "#/definitions/generic_options"
-        }
-    ],
-    "properties": {
+   "properties": {
         "assay": {
-            "type": "string"
+            "type": "string",
+            "hidden": true,
+            "description": "Assay type, set automatically by -profile"
         },
         "container": {
             "type": "string",
@@ -279,142 +626,173 @@
         "whitelist": {
             "type": "string"
         },
-        "fasta": {
-            "type": "string"
-        },
-        "gtf": {
-            "type": "string"
-        },
-        "genomeDir": {
-            "type": "string"
-        },
-        "mt_gene_list": {
-            "type": "string"
-        },
-        "genome_name": {
-            "type": "string",
-            "default": "genomeDir"
-        },
-        "keep_attributes": {
-            "type": "string"
-        },
-        "soloFeatures": {
-            "type": "string",
-            "default": "GeneFull_Ex50pAS Gene"
-        },
-        "outFilterMatchNmin": {
-            "type": "integer",
-            "default": 50
-        },
-        "soloCellFilter": {
-            "type": "string",
-            "default": "EmptyDrops_CR"
-        },
-        "outSAMtype": {
-            "type": "string",
-            "default": "BAM SortedByCoordinate"
-        },
-        "soloCBmatchWLtype": {
-            "type": "string",
-            "default": "EditDist_2"
-        },
-        "limitBAMsortRAM": {
-            "type": "integer",
-            "default": 32000000000
-        },
-        "adapter_3p": {
-            "type": "string",
-            "default": "AAAAAAAAAAAA"
-        },
-        "report_soloFeature": {
-            "type": "string",
-            "default": "GeneFull_Ex50pAS"
-        },
-        "STAR_param": {
-            "type": "string"
-        },
         "run_fastqc": {
             "type": "boolean"
         },
         "trace_report_suffix": {
-            "type": "string",
-            "default": "2026-04-03_09-34-16"
+            "type": "string"
         },
         "max_thread": {
             "type": "integer",
             "default": 16
-        },
-        "basequalilty": {
-            "type": "integer",
-            "default": 20
-        },
-        "snp_threshold": {
-            "type": "number",
-            "default": 0.5
-        },
-        "snp_min_depth": {
-            "type": "integer",
-            "default": 10
-        },
-        "readsplit": {
-            "type": "integer",
-            "default": 1000000
-        },
-        "all_type_plot": {
-            "type": "boolean",
-            "default": false
-        },
-        "panel": {
-            "type": "string"
-        },
-        "gene_list": {
-            "type": "string"
-        },
-        "bed": {
-            "type": "string"
-        },
-        "max_duplicate": {
-            "type": "integer",
-            "default": 5
-        },
-        "bcftools_filter": {
-            "type": "string",
-            "default": "QUAL>=100"
-        },
-        "ref_threshold_method": {
-            "type": "string",
-            "default": "none"
-        },
-        "alt_threshold_method": {
-            "type": "string",
-            "default": "none"
-        },
-        "ref_min_support_read": {
-            "type": "integer",
-            "default": 2
-        },
-        "alt_min_support_read": {
-            "type": "integer",
-            "default": 2
-        },
-        "vaf": {
-            "type": "number",
-            "default": 0.2
-        },
-        "database": {
-            "type": "string",
-            "default": "GRCh38.mane.1.0.ensembl"
-        },
-        "snpeff_cache": {
-            "type": "string"
-        },
-        "plot_top_n": {
-            "type": "integer",
-            "default": 20
-        },
-        "ffpe_outFilterMatchNmin": {
-            "type": "integer",
-            "default": 30
         }
-    }
+    },
+    "allOf": [
+        {
+            "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/institutional_config_options"
+        },
+        {
+            "$ref": "#/$defs/max_job_request_options"
+        },
+        {
+            "$ref": "#/$defs/generic_options"
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "rna" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/rna_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "dynaseq" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/dynaseq_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "snp" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/snp_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "ffpe" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/ffpe_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "vdj" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/vdj_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "bulk_vdj" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/bulk_vdj_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "citeseq" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/citeseq_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "fusion" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/fusion_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "tag" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/tag_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "space" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/space_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "sweetseq" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/sweetseq_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "capture_virus" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/capture_virus_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "pathseq" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/pathseq_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "bulk_rna" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/bulk_rna_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "probe" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/probe_options"
+            }
+        },
+        {
+            "if": {
+                "properties": { "assay": { "const": "space_tag" } },
+                "required": ["assay"]
+            },
+            "then": {
+                "$ref": "#/$defs/space_tag_options"
+            }
+        }
+    ]
 }

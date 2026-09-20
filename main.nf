@@ -18,6 +18,18 @@ include { RNA                     } from './workflows/rna'
 include { DYNASEQ                 } from './workflows/dynaseq'
 include { SNP                     } from './workflows/snp'
 include { FFPE                    } from './workflows/ffpe'
+include { VDJ                     } from './workflows/vdj'
+include { CITESEQ                 } from './workflows/citeseq'
+include { FUSION                  } from './workflows/fusion'
+include { TAG                     } from './workflows/tag'
+include { SPACE                   } from './workflows/space'
+include { SWEETSEQ                } from './workflows/sweetseq'
+include { CAPTURE_VIRUS           } from './workflows/capture_virus'
+include { PATHSEQ                 } from './workflows/pathseq'
+include { BULK_RNA                } from './workflows/bulk_rna'
+include { BULK_VDJ                } from './workflows/bulk_vdj'
+include { PROBE                   } from './workflows/probe'
+include { SPACE_TAG               } from './workflows/space_tag'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nf-celescope_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nf-celescope_pipeline'
 
@@ -41,7 +53,8 @@ workflow NF_CELESCOPE {
     // check assay
     //
     if (!params.assay) {
-        println "Please specify an assay with --assay"
+        println "Please specify an assay with -profile <assay_name>"
+        println "Available assays: rna, dynaseq, snp, ffpe, vdj, bulk_vdj, citeseq, fusion, tag, space, sweetseq, capture_virus, pathseq, bulk_rna, probe, space_tag"
         System.exit(1)
     }
 
@@ -61,6 +74,42 @@ workflow NF_CELESCOPE {
             break
         case 'ffpe':
             result = FFPE (samplesheet)
+            break
+        case 'vdj':
+            result = VDJ (samplesheet)
+            break
+        case 'citeseq':
+            result = CITESEQ (samplesheet)
+            break
+        case 'fusion':
+            result = FUSION (samplesheet)
+            break
+        case 'tag':
+            result = TAG (samplesheet)
+            break
+        case 'space':
+            result = SPACE (samplesheet)
+            break
+        case 'sweetseq':
+            result = SWEETSEQ (samplesheet)
+            break
+        case 'capture_virus':
+            result = CAPTURE_VIRUS (samplesheet)
+            break
+        case 'pathseq':
+            result = PATHSEQ (samplesheet)
+            break
+        case 'bulk_rna':
+            result = BULK_RNA (samplesheet)
+            break
+        case 'bulk_vdj':
+            result = BULK_VDJ (samplesheet)
+            break
+        case 'probe':
+            result = PROBE (samplesheet)
+            break
+        case 'space_tag':
+            result = SPACE_TAG (samplesheet)
             break
         default:
             error "Unknown assay type: ${params.assay}"

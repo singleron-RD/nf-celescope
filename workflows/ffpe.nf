@@ -94,8 +94,8 @@ process CELESCOPE_FFPE {
     def (fq1, fq2) = reads.collate(2).transpose()
     def fq1_str = fq1.join(',')
     def fq2_str = fq2.join(',')
-    def pattern = params.pattern ? '--pattern ${params.pattern}' : ''
-    def whitelist = params.whitelist ? '--whitelist ${params.whitelist}' : ''
+    def pattern = params.pattern ? "--pattern ${params.pattern}" : ''
+    def whitelist = params.whitelist ? "--whitelist ${params.whitelist}" : ''
     def soloFeatures = params.soloFeatures.contains("SJ") ? "${params.soloFeatures}" : "${params.soloFeatures} SJ"
 
     """
@@ -120,7 +120,7 @@ process CELESCOPE_FFPE {
         ${whitelist} \\
         --adapter_3p ${params.adapter_3p} \\
         --genomeDir ${genomeDir} \\
-        --outFilterMatchNmin ${params.ffpe_outFilterMatchNmin} \\
+        --outFilterMatchNmin ${params.outFilterMatchNmin} \\
         --soloCellFilter "${params.soloCellFilter}" \\
         --limitBAMsortRAM ${params.limitBAMsortRAM} \\
         --STAR_param "${params.STAR_param}" \\
